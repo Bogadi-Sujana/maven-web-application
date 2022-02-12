@@ -4,7 +4,7 @@
 	
 	<groupId>com.mt</groupId>
 	<artifactId>sujana-web-application</artifactId>
-	<version>SNAPSHOT-1.0.0</version>
+	<version>SNAPSHOT-1.0.1</version>
 	<packaging>war</packaging>
 	
 	<name>maven-web-application</name>
