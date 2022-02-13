@@ -1,16 +1,16 @@
 pipeline {
     agent any
     //tools
-tools {
-  maven 'maven-3.8.3'
-}
-options {
-  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '2')
-  timestamps ()
-}
-triggers {
-  pollSCM ('* * * * *')
-}
+    tools {
+        maven 'maven-3.8.3'
+    }
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '2')
+        timestamps ()
+    }
+    triggers {
+    pollSCM ('* * * * *')
+    }
     stages {
         stage('Git') {
             steps {
