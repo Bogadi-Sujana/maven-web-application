@@ -16,7 +16,7 @@ triggers {
             steps {
                 git branch: 'development', url: 'https://github.com/Bogadi-Sujana/maven-web-application.git'
             }
-        }
+        }//Git
         stage('Maven'){
             steps {
                 sh "mvn clean package"
