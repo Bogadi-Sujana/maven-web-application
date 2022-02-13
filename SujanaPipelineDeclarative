@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+tools {
+  maven 'maven-3.8.3'
+}
+options {
+  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '2')
+  timestamps
+}
+triggers {
+  pollSCM '* * * * *'
+}
+    stages {
+        stage('Git') {
+            steps {
+                git branch: 'development', url: 'https://github.com/Bogadi-Sujana/maven-web-application.git'
+            }
+        }
+        stage('Maven'){
+            steps {
+                sh "mvn clean package"
+            }
+        }
+        stage('SOnarQubeReport'){
+            steps{
+                sh "mvn sonar:sonar"
+            }
+        }
+        stage('Nexus'){
+            steps{
+                sh "mvn deploy"
+            }
+        }
+        stage('Tomcat'){
+            steps{
+                sshagent(['e4ea0ac4-79aa-49d3-89c1-f00cac06b4b2']) {
+                    sh "scp -o StrictHostKeyChecking=no target/sujana-web-application.war ec2-user@65.1.100.208:/opt/apache-tomcat-9.0.58/webapps"
+                }
+            }
+        }
+    }
+}
