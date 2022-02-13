@@ -1,0 +1,20 @@
+node{
+    def mavenHome = tool name: "maven-3.8.3"
+    stage("Git"){
+        git branch: 'development', url: 'https://github.com/Bogadi-Sujana/maven-web-application.git'
+    }
+    stage("MavenBuild"){
+        sh "${mavenHome}/bin/mvn clean package"
+    }
+    stage("SonarQube"){
+        sh "${mavenHome}/bin/mvn sonar:sonar"
+    }
+    stage("Nexus"){
+        sh "${mavenHome}/bin/mvn deploy"
+    }
+    stage("Tomcat"){
+        sshagent(['e4ea0ac4-79aa-49d3-89c1-f00cac06b4b2']) {
+    sh "scp -o StrictHostKeyChecking=no target/sujana-web-application.war ec2-user@65.1.100.208:/opt/apache-tomcat-9.0.58/webapps"
+}
+    }
+}
